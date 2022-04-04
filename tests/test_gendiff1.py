@@ -1,4 +1,5 @@
-from gendiff.scripts.gendiff import generate_diff
+#!/usr/bin/env python3
+from gendiff.dict_comp.dict_comp import generate_diff
 import json
 import sys
 import pathlib
@@ -14,7 +15,8 @@ def test_generate_diff():
   - follow: False
     host: hexlet.io
   - proxy: 123.234.53.22
-    timeout: 50
+  - timeout: 50
+  + timeout: 20
   + verbose: True
 }"""
 

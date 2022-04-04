@@ -1,0 +1,10 @@
+name: hello-world
+on: push
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+	    - name: my-test
+        run: make test
+      - name: lint8
+        run: make lint
