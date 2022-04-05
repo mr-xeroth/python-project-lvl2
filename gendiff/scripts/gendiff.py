@@ -9,27 +9,6 @@ import sys
 
 file_diff = 'diff.txt'
 
-# def generate_diff(dict1, dict2):
-#     keys_agregated = sorted(set.union(set(dict1), set(dict2)))
-#     # print(dict_agregated)
-#     diff_list = []
-#     diff_list.append('{\n')
-#     char_diff = ''
-
-#     for key_ in keys_agregated:
-#         if key_ in dict1 and key_ not in dict2:
-#             char_diff = '-'
-#             dict_value = dict1[key_]
-#         if key_ not in dict1 and key_ in dict2:
-#             char_diff = '+'
-#             dict_value = dict2[key_]
-#         if key_ in dict1 and key_ in dict2:
-#             char_diff = ' '
-#             dict_value = dict1[key_]
-#         diff_list.append(f'  {char_diff} {key_}: {dict_value}\n')
-#     diff_list.append('}')
-#     return ''.join(diff_list)
-
 
 def main():
     parser = argparse.ArgumentParser(description='Generate diff')
