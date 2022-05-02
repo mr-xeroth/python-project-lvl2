@@ -6,7 +6,7 @@
 
 **Установка**
 
-Требует [Python](https://www.python.org/) v3.7+, [Poetry](https://python-poetry.org/) v1.0+.
+Требует [Python](https://www.python.org/) v3.8+, [Poetry](https://python-poetry.org/) v1.0+.
 
 ```sh
 cd <source folder>
@@ -30,6 +30,8 @@ geniff file1 file2
 pip3 uninstall hexlet-code
 ```
 
-**Пример работы**
+**Примеры работы**
 
 <a href="https://asciinema.org/a/461063" target="_blank"><img src="https://asciinema.org/a/461063.svg" /></a>
+<a href="https://asciinema.org/a/VT78LFXcm6BXwzFhLnPVH2Pz3" target="_blank"><img src="https://asciinema.org/a/VT78LFXcm6BXwzFhLnPVH2Pz3.svg" /></a>
+<a href="https://asciinema.org/a/KxtWJqYz9iuKYqtHCRWm9Y6oB" target="_blank"><img src="https://asciinema.org/a/KxtWJqYz9iuKYqtHCRWm9Y6oB.svg" /></a>

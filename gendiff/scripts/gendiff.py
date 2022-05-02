@@ -1,52 +1,59 @@
 #!/usr/bin/env python3
-from gendiff.dict_comp.dict_comp import generate_diff
+from gendiff.modules.generate_diff import generate_diff
+from gendiff.modules.stylish import stylish
+from gendiff.modules.plain import plain
+from gendiff.modules.jsonify import jsonify
+
 import argparse
 import yaml
 import json
-
-
 import sys
 
-file_diff = 'diff.txt'
+
+def batch_load(files):
+    content = []
+    for fname in files:
+        fobj = open(fname)
+        data = None
+        with fobj:
+            if fname.endswith('.yaml') or fname.endswith('.yml'):
+                data = yaml.load(fobj, Loader=yaml.FullLoader)
+            elif fname.endswith('.json'):
+                data = json.load(fobj)
+            content.append(data)
+    return content
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Generate diff')
+    parser = argparse.ArgumentParser(description='Generates .json diff')
     parser.add_argument('first_file', type=argparse.FileType('r'))
     parser.add_argument('second_file', type=argparse.FileType('r'))
-    parser.add_argument('-f', '--format', type=str, metavar='FORMAT',
-                        help='set format of output')
-
+    parser.add_argument('-f', '--format', type=str,
+                        help='Sets diff format. Set "plain", \
+                        "json" or else get diff tree.')
+    
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
+        sys.exit(0)
+    
+    args = parser.parse_args(sys.argv[1:])
+
+    files = [args.first_file.name, args.second_file.name]
+
+    data = batch_load(files)
+    data = [x for x in data if isinstance(x, dict)]
+    if len(data) != 2:
+        print('File load failed')
         sys.exit(1)
+
+    diff = generate_diff(data[0], data[1])
+
+    if args.format == 'plain':
+        print(plain(diff))
+    elif args.format == 'json':
+        print(json.dumps(jsonify(diff), indent=2, sort_keys=True))
     else:
-        args = parser.parse_args()
-        # print('ARG:', args.first_file.name, args.second_file.name)
-
-        list_files = [args.first_file.name, args.second_file.name]
-
-        list_dicts = []
-
-        for file_name in list_files:
-            fobj = open(file_name)
-            with fobj:
-                if file_name.endswith('.yaml') or file_name.endswith('.yml'):
-                    data = yaml.load(fobj, Loader=yaml.FullLoader)
-                    print('YD', data)
-                    list_dicts.append(data)
-                elif file_name.endswith('.json'):
-                    list_dicts.append(json.load(fobj))
-                else:
-                    print("No file with proper '.yaml' or '.json' name")
-                    sys.exit(1)
-
-        diff = generate_diff(list_dicts[0], list_dicts[1])
-        print(diff)
-
-        with open(file_diff, 'w', encoding='utf-8') as f:
-            f.write(diff)
-        print(f'Written to {file_diff}')
+        print(stylish(diff))
 
 
 if __name__ == '__main__':

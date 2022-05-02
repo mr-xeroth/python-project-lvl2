@@ -10,7 +10,7 @@ publish:
 package-install:
 	python -m pip install --user dist/*.whl
 
-force-install:
+reinstall:
 	python -m pip install --force-reinstall --user dist/*.whl
 
 gendiff:
