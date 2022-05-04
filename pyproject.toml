@@ -2,6 +2,11 @@
 name = "hexlet-code"
 version = "0.1.0"
 description = "level 2 student project"
+classifiers = [
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Python Modules"
+]
+
 authors = ["Boris Ageyev <mr.broomy@gmail.com>"]
 repository = "https://github.com/mr-xeroth/python-project-lvl2"
 packages = [

@@ -6,6 +6,8 @@
 
 <a href="https://codeclimate.com/github/mr-xeroth/python-project-lvl2/maintainability"><img src="https://api.codeclimate.com/v1/badges/2d826e4dba0f5b389023/maintainability" /></a>
 
+<a href="https://codeclimate.com/github/mr-xeroth/python-project-lvl2/test_coverage"><img src="https://api.codeclimate.com/v1/badges/2d826e4dba0f5b389023/test_coverage" /></a>
+
 **Описание**
 Сравнение JSON, генерация изменений в формате "json", "plain" и в формате дерева.
 

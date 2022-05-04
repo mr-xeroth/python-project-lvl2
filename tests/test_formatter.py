@@ -4,7 +4,7 @@ import pytest
 import json
 
 
-from gendiff.modules.generate_diff import generate_diff
+from gendiff.scripts.gendiff import generate_diff
 from gendiff.modules.stylish import stylish
 from gendiff.modules.plain import plain
 from gendiff.modules.jsonify import jsonify
