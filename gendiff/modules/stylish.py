@@ -35,27 +35,30 @@ def get_diff(diff):
         return '', diff
 
 
+def neat_stringify(indent, mark, key_, data):
+    double = ''
+    template = '{}{} {}: {}\n'
+    if not mark:
+        mark = ' '
+    elif mark == '*':
+        mark = '-'
+        double = template.format(indent, mark, key_, next(data))
+        mark = '+'
+    return double + template.format(indent, mark, key_, next(data))
+
+
 def neat_format(data, indent=4):
     def walk(data, depth):
         if not isinstance(data, dict):
             return data
         tab_close = indent * depth * ' '
         tab_indent = tab_close + (indent - 2) * ' '
-        template = f'{tab_indent}{{}} {{}}: {{}}\n'
         output = ''
         for each in data.keys():
             # list of sorts [diff_mark, value1_pos, value2_opt]
             values = data[each]
             parsed = map(lambda x: walk(x, depth + 1), values[1:])
-            if (mark := values[0]):
-                if mark == '*':
-                    mark = '-'
-                    output += template.format(mark,
-                                              each, next(parsed))
-                    mark = '+'
-            else:
-                mark = ' '
-            output += template.format(mark, each, next(parsed))
+            output += neat_stringify(tab_indent, values[0], each, parsed)
         return '{\n' + output + f'{tab_close}}}'
     return walk(data, 0)
 

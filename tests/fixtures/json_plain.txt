@@ -1,0 +1,47 @@
+{
+  "host": "hexlet.io",
+  "timeout": 50,
+  "proxy": "123.234.53.22",
+  "follow": false
+}
+
+
+{
+  "timeout": 20,
+  "verbose": true,
+  "host": "hexlet.io"
+}
+
+
+{'follow': {'diff-': False},
+ 'host': 'hexlet.io',
+ 'proxy': {'diff-': '123.234.53.22'},
+ 'timeout': {'diff+': 20, 'diff-': 50},
+ 'verbose': {'diff+': True}}
+
+
+{
+  - follow: false
+    host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50
+  + timeout: 20
+  + verbose: true
+}
+
+
+Property 'follow' was removed
+Property 'proxy' was removed
+Property 'timeout' was updated. From '50' to '20'
+Property 'verbose' was added with value: true
+
+
+{
+  "follow__removed": false,
+  "proxy__removed": "123.234.53.22",
+  "timeout__updated": {
+    "new": 20,
+    "old": 50
+  },
+  "verbose__added": true
+}

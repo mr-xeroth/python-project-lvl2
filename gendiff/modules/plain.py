@@ -50,7 +50,7 @@ def plain(diff):
             else:
                 output += walk(diff[each], node_name)
         return output
-    return walk(diff, '')
+    return walk(diff, '').rstrip('\n')
 
 
 def main():

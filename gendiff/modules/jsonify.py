@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import json
 
 
 def parse_diff(diff):
@@ -18,19 +19,17 @@ def parse_diff(diff):
 
 def get_diff(key_, diff):
     values = parse_diff(diff)
+    new_key, value = None, None
     if values[0] and values[1]:
         new_key = key_ + '__updated'
         value = {'old': values[0]['val'], 'new': values[1]['val']}
-        return new_key, value
     elif values[0]:
         new_key = key_ + '__removed'
         value = values[0]['val']
-        return new_key, value
     elif values[1]:
         new_key = key_ + '__added'
         value = values[1]['val']
-        return new_key, value
-    return None, None
+    return new_key, value
 
 
 def jsonify(diff):
@@ -44,7 +43,7 @@ def jsonify(diff):
                 value = walk(diff[each])
             output.update({key_: value})
         return output
-    return walk(diff)
+    return json.dumps(walk(diff), indent=2, sort_keys=True)
 
 
 def main():

@@ -13,29 +13,28 @@ import sys
 def batch_load(files):
     content = []
     for fname in files:
-        fobj = open(fname)
         data = None
-        with fobj:
+        with open(fname) as f:
             if fname.endswith('.yaml') or fname.endswith('.yml'):
-                data = yaml.load(fobj, Loader=yaml.FullLoader)
+                data = yaml.load(f, Loader=yaml.FullLoader)
             elif fname.endswith('.json'):
-                data = json.load(fobj)
+                data = json.load(f)
             content.append(data)
     return content
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Generates .json diff')
+    parser = argparse.ArgumentParser(description='Compares two configuration \
+                                     files and shows a difference.')
     parser.add_argument('first_file', type=argparse.FileType('r'))
     parser.add_argument('second_file', type=argparse.FileType('r'))
     parser.add_argument('-f', '--format', type=str,
-                        help='Sets diff format. Set "plain", \
-                        "json" or else get diff tree.')
-    
+                        help='set format of output')
+
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(0)
-    
+
     args = parser.parse_args(sys.argv[1:])
 
     files = [args.first_file.name, args.second_file.name]
@@ -51,7 +50,7 @@ def main():
     if args.format == 'plain':
         print(plain(diff))
     elif args.format == 'json':
-        print(json.dumps(jsonify(diff), indent=2, sort_keys=True))
+        print(jsonify(diff))
     else:
         print(stylish(diff))
 

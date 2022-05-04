@@ -1,0 +1,185 @@
+{
+  "common": {
+    "setting1": "Value 1",
+    "setting2": 200,
+    "setting3": true,
+    "setting6": {
+      "key": "value",
+      "doge": {
+        "wow": ""
+      }
+    }
+  },
+  "group1": {
+    "baz": "bas",
+    "foo": "bar",
+    "nest": {
+      "key": "value"
+    }
+  },
+  "group2": {
+    "abc": 12345,
+    "deep": {
+      "id": 45
+    }
+  }
+}
+
+
+{
+  "common": {
+    "follow": false,
+    "setting1": "Value 1",
+    "setting3": null,
+    "setting4": "blah blah",
+    "setting5": {
+      "key5": "value5"
+    },
+    "setting6": {
+      "key": "value",
+      "ops": "vops",
+      "doge": {
+        "wow": "so much"
+      }
+    }
+  },
+  "group1": {
+    "foo": "bar",
+    "baz": "bars",
+    "nest": "str"
+  },
+  "group3": {
+    "deep": {
+      "id": {
+        "number": 45
+      }
+    },
+    "fee": 100500
+  }
+}
+
+
+{'common': {'follow': {'diff+': False},
+            'setting1': 'Value 1',
+            'setting2': {'diff-': 200},
+            'setting3': {'diff+': None, 'diff-': True},
+            'setting4': {'diff+': 'blah blah'},
+            'setting5': {'diff+': {'key5': 'value5'}},
+            'setting6': {'doge': {'wow': {'diff+': 'so much', 'diff-': ''}},
+                         'key': 'value',
+                         'ops': {'diff+': 'vops'}}},
+ 'group1': {'baz': {'diff+': 'bars', 'diff-': 'bas'},
+            'foo': 'bar',
+            'nest': {'diff+': 'str', 'diff-': {'key': 'value'}}},
+ 'group2': {'diff-': {'abc': 12345, 'deep': {'id': 45}}},
+ 'group3': {'diff+': {'deep': {'id': {'number': 45}}, 'fee': 100500}}}
+
+
+{
+    common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+        setting6: {
+            doge: {
+              - wow:  
+              + wow: so much
+            }
+            key: value
+          + ops: vops
+        }
+    }
+    group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: {
+            key: value
+        }
+      + nest: str
+    }
+  - group2: {
+        abc: 12345
+        deep: {
+            id: 45
+        }
+    }
+  + group3: {
+        deep: {
+            id: {
+                number: 45
+            }
+        }
+        fee: 100500
+    }
+}
+
+
+Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]
+
+
+{
+  "common": {
+    "follow__added": false,
+    "setting2__removed": 200,
+    "setting3__updated": {
+      "new": null,
+      "old": true
+    },
+    "setting4__added": "blah blah",
+    "setting5__added": {
+      "key5": "value5"
+    },
+    "setting6": {
+      "doge": {
+        "wow__updated": {
+          "new": "so much",
+          "old": ""
+        }
+      },
+      "ops__added": "vops"
+    }
+  },
+  "group1": {
+    "baz__updated": {
+      "new": "bars",
+      "old": "bas"
+    },
+    "nest__updated": {
+      "new": "str",
+      "old": {
+        "key": "value"
+      }
+    }
+  },
+  "group2__removed": {
+    "abc": 12345,
+    "deep": {
+      "id": 45
+    }
+  },
+  "group3__added": {
+    "deep": {
+      "id": {
+        "number": 45
+      }
+    },
+    "fee": 100500
+  }
+}

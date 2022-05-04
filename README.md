@@ -2,7 +2,12 @@
 
 [![Actions Status](https://github.com/mr-xeroth/python-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/mr-xeroth/python-project-lvl2/actions)
 
+[![Tests Status](https://github.com/mr-xeroth/python-project-lvl2/workflows/test-on-push/badge.svg)](https://github.com/mr-xeroth/python-project-lvl2/actions/workflows/test-on-push.yaml)
+
 <a href="https://codeclimate.com/github/mr-xeroth/python-project-lvl2/maintainability"><img src="https://api.codeclimate.com/v1/badges/2d826e4dba0f5b389023/maintainability" /></a>
+
+**Описание**
+Сравнение JSON, генерация изменений в формате "json", "plain" и в формате дерева.
 
 **Установка**
 
@@ -17,12 +22,11 @@ make package-install
 **Запуск**
 
 ```sh
-geniff file1 file2
+gendiff [-h] [-f FORMAT] file1 file2
+    
+    
+    "FORMAT": "plain", "json"
 ```
-
-| Приложение        | Описание                                        |
-|-------------------|-------------------------------------------------|
-| gendiff           | Сравнение двух текстовых файлов, запись diff.txt|
 
 **Удаление**
 
@@ -32,6 +36,6 @@ pip3 uninstall hexlet-code
 
 **Примеры работы**
 
-<a href="https://asciinema.org/a/461063" target="_blank"><img src="https://asciinema.org/a/461063.svg" /></a>
+<a href="https://asciinema.org/a/491809" target="_blank"><img src="https://asciinema.org/a/491809.svg" /></a>
 <a href="https://asciinema.org/a/VT78LFXcm6BXwzFhLnPVH2Pz3" target="_blank"><img src="https://asciinema.org/a/VT78LFXcm6BXwzFhLnPVH2Pz3.svg" /></a>
 <a href="https://asciinema.org/a/KxtWJqYz9iuKYqtHCRWm9Y6oB" target="_blank"><img src="https://asciinema.org/a/KxtWJqYz9iuKYqtHCRWm9Y6oB.svg" /></a>
