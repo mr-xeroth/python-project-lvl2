@@ -19,7 +19,6 @@ def batch_read(files):
     content = []
     for fname in files:
         data = None
-        print('\nread:', fname)
         with open(fname) as f:
             if fname.endswith('.yaml') or fname.endswith('.yml'):
                 data = yaml.load(f, Loader=yaml.SafeLoader)

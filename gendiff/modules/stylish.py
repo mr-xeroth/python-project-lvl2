@@ -3,9 +3,15 @@ import sys
 
 
 def stringify(value):
-    translate = {True: 'true', False: 'false', None: 'null', '': ' '}
-    new = translate.get(value)
-    return new if new else value
+    translate = {True: 'true', False: 'false', None: 'null'}
+    if isinstance(value, int):
+        return str(value)
+    else:
+        new = translate.get(value)
+        if new:
+            return new
+        else:
+            return value
 
 
 def parse_diff(diff):
