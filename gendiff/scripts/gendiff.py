@@ -1,23 +1,8 @@
 #!/usr/bin/env python3
 import sys
-import json
-import yaml
 import argparse
 
 from gendiff.core import generate_diff
-
-
-def batch_load(files):
-    content = []
-    for fname in files:
-        data = None
-        with open(fname) as f:
-            if fname.endswith('.yaml') or fname.endswith('.yml'):
-                data = yaml.load(f, Loader=yaml.SafeLoader)
-            elif fname.endswith('.json'):
-                data = json.load(f)
-            content.append(data)
-    return content
 
 
 def main():
@@ -37,13 +22,7 @@ def main():
 
     files = [args.first_file.name, args.second_file.name]
 
-    data = batch_load(files)
-    is_complete = [isinstance(x, dict) for x in data]
-    if not all(is_complete):
-        print('File reading failed')
-        sys.exit(1)
-
-    print(generate_diff(data[0], data[1], args.format))
+    print(generate_diff(files[0], files[1], args.format))
 
 
 if __name__ == '__main__':

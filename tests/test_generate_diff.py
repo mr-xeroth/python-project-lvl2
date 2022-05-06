@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 import pytest
 import os
-import json
-import yaml
 
 from gendiff.core import generate_diff
 
@@ -34,26 +32,19 @@ def get_file_path(file_name):
     return os.path.join(cwd, 'fixtures', file_name)
 
 
+def batch_file_rename(files):
+    text = []
+    for name in files:
+        text.append(get_file_path(name))
+    return text
+
+
 def batch_read(files):
     text = []
     for name in files:
         with open(get_file_path(name), 'r') as f:
             text.append(f.read())
     return text
-
-
-def batch_load_json(data):
-    result = []
-    for each in data:
-        result.append(json.loads(each))
-    return tuple(result)
-
-
-def batch_load_yaml(data):
-    result = []
-    for each in data:
-        result.append(yaml.load(each, Loader=yaml.SafeLoader))
-    return tuple(result)
 
 #
 #   PLAIN VIEW
@@ -65,20 +56,16 @@ def plain_view():
 #
 #   PLAIN JSON
 #
-plain_json_text = batch_read(plain_json_file)
-
 @pytest.fixture
 def plain_json():
-    return batch_load_json(plain_json_text)
+    return batch_file_rename(plain_json_file)
 
 #
 #   PLAIN YAML
 #
-plain_yaml_text = batch_read(plain_yaml_file)
-
 @pytest.fixture
 def plain_yaml():
-    return batch_load_yaml(plain_yaml_text)
+    return batch_file_rename(plain_yaml_file)
 
 #
 #   NESTED VIEW
@@ -90,20 +77,16 @@ def nested_view():
 #
 #   NESTED JSON
 #
-nested_json_text = batch_read(nested_json_file)
-
 @pytest.fixture
 def nested_json():
-    return batch_load_json(nested_json_text)
+    return batch_file_rename(nested_json_file)
 
 #
 #   NESTED YAML
 #
-nested_yaml_text = batch_read(nested_yaml_file)
-
 @pytest.fixture
 def nested_yaml():
-    return batch_load_yaml(nested_yaml_text)
+    return batch_file_rename(nested_yaml_file)
 
 #
 #   TEST PLAIN JSON
@@ -112,6 +95,7 @@ def nested_yaml():
 def test_plain_json(index, style, plain_view, plain_json):
     exemplar = plain_view[index]
     json1, json2 = plain_json
+    print ('file1:', json1, '\nfile2:', json2)
     assert generate_diff(json1, json2, style) == exemplar
 
 #
