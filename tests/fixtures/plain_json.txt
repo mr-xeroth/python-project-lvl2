@@ -1,0 +1,9 @@
+{
+  "follow__removed": false,
+  "proxy__removed": "123.234.53.22",
+  "timeout__updated": {
+    "new": 20,
+    "old": 50
+  },
+  "verbose__added": true
+}

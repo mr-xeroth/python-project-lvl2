@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "hexlet-code"
+name = "gendiff"
 version = "0.1.0"
 description = "level 2 student project"
 classifiers = [
@@ -10,7 +10,10 @@ classifiers = [
 authors = ["Boris Ageyev <mr.broomy@gmail.com>"]
 repository = "https://github.com/mr-xeroth/python-project-lvl2"
 packages = [
-	{ include = "gendiff" },
+    { include = "gendiff" },
+]
+include = [
+    { path = "tests", format = "sdist" }
 ]
 
 [tool.poetry.dependencies]
