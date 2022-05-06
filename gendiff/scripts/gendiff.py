@@ -4,17 +4,7 @@ import json
 import yaml
 import argparse
 
-from gendiff.modules.parse import parse
-from gendiff.modules.stylish import stylish
-from gendiff.modules.plain import plain
-from gendiff.modules.jsonify import jsonify
-
-
-
-def generate_diff(json1, json2, format="stylish"):
-    func_index = {"stylish": stylish, "plain": plain, "json": jsonify}
-    if format in func_index:
-        return func_index[format](parse(json1, json2))
+from gendiff.core import generate_diff
 
 
 def batch_load(files):
@@ -36,7 +26,8 @@ def main():
     parser.add_argument('first_file', type=argparse.FileType('r'))
     parser.add_argument('second_file', type=argparse.FileType('r'))
     parser.add_argument('-f', '--format', type=str, default="stylish",
-                        help='set format of output')
+                        help='set format of output: "plain", "json", \
+                        default "stylish" ')
 
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)

@@ -4,7 +4,7 @@ import os
 import json
 import yaml
 
-from gendiff.scripts.gendiff import generate_diff
+from gendiff.core import generate_diff
 
 
 plain_json_file = ("plain1.json", "plain2.json")
