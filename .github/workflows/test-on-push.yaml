@@ -17,6 +17,7 @@ jobs:
           python -m pip install --upgrade pip
           curl -sSL https://install.python-poetry.org | python3 -
           poetry install
+          pip install coverage pytest
       - name: flake8 run
         run: |
           make lint
@@ -30,5 +31,5 @@ jobs:
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
-          poetry run coverage run --source=. -m pytest
+          coverage run --source=. -m pytest
           ./cc-test-reporter after-build
