@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-20.04  
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.10
@@ -23,6 +23,12 @@ jobs:
       - name: pytest run
         run: |
           make test
-      - name: pytest-cov run
+      - name: Test & publish code coverage
+        env:
+          CC_TEST_REPORTER_ID: 8e1ed92de590fc77c73fe71948474a373195fd7c0ad7e48d30a14db22a55851b
         run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
           make coverage
+          ./cc-test-reporter after-build
