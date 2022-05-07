@@ -15,7 +15,7 @@ nested_json_file = ("nested1.json", "nested2.json")
 
 nested_yaml_file = ("nested1.yaml", "nested2.yaml")
 
-nested_view_file = ("nested_stylish.txt", "nested_plain.txt",\
+nested_view_file = ("nested_stylish.txt", "nested_plain.txt",
                     "nested_json.txt")
 
 tags = ("stylish", "plain", "json")
@@ -46,12 +46,14 @@ def batch_read(files):
             text.append(f.read())
     return text
 
+
 #
 #   PLAIN VIEW
 #
 @pytest.fixture
 def plain_view():
     return batch_read(plain_view_file)
+
 
 #
 #   PLAIN JSON
@@ -60,12 +62,14 @@ def plain_view():
 def plain_json():
     return batch_file_rename(plain_json_file)
 
+
 #
 #   PLAIN YAML
 #
 @pytest.fixture
 def plain_yaml():
     return batch_file_rename(plain_yaml_file)
+
 
 #
 #   NESTED VIEW
@@ -74,6 +78,7 @@ def plain_yaml():
 def nested_view():
     return batch_read(nested_view_file)
 
+
 #
 #   NESTED JSON
 #
@@ -81,12 +86,14 @@ def nested_view():
 def nested_json():
     return batch_file_rename(nested_json_file)
 
+
 #
 #   NESTED YAML
 #
 @pytest.fixture
 def nested_yaml():
     return batch_file_rename(nested_yaml_file)
+
 
 #
 #   TEST PLAIN JSON
@@ -98,6 +105,7 @@ def test_plain_json(index, style, plain_view, plain_json):
     print ('file1:', json1, '\nfile2:', json2)
     assert generate_diff(json1, json2, style) == exemplar
 
+
 #
 #   TEST PLAIN YAML
 #
@@ -107,6 +115,7 @@ def test_plain_yaml(index, style, plain_view, plain_yaml):
     yaml1, yaml2 = plain_yaml
     assert generate_diff(yaml1, yaml2, style) == exemplar
 
+
 #
 #   TEST NESTED JSON
 #
@@ -115,6 +124,7 @@ def test_nested_json(index, style, nested_view, nested_json):
     exemplar = nested_view[index]
     json1, json2 = nested_json
     assert generate_diff(json1, json2, style) == exemplar
+
 
 #
 #   TEST NESTED YAML
