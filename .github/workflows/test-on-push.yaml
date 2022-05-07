@@ -32,4 +32,6 @@ jobs:
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
           coverage run --source=. -m pytest
-          ./cc-test-reporter after-build
+          ./cc-test-reporter format-coverage --input-type coverage.py
+          ./cc-test-reporter upload-coverage
+
