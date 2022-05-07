@@ -4,17 +4,18 @@ import sys
 from gendiff.modules.stringify import stringify
 
 
-def string_empty(func):
-    def wrap (value):
+def quote_string(func):
+    def wrap(value):
         result = None
-        if value == '':
-            result = "''"
+        if type(value) is str:
+            result = f"'{value}'"
         else:
             result = func(value)
         return result
     return wrap
 
-stringify = string_empty(stringify)
+
+stringify = quote_string(stringify)
 
 
 def parse_diff(diff):
