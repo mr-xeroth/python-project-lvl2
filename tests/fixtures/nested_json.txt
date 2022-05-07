@@ -45,5 +45,32 @@
       }
     },
     "fee": 100500
+  },
+  "group4": {
+    "default__updated": {
+      "new": "",
+      "old": null
+    },
+    "foo__updated": {
+      "new": null,
+      "old": 0
+    },
+    "isNested__updated": {
+      "new": "none",
+      "old": false
+    },
+    "key__added": false,
+    "nest": {
+      "bar__updated": {
+        "new": 0,
+        "old": ""
+      },
+      "isNested__removed": true
+    },
+    "someKey__added": true,
+    "type__updated": {
+      "new": "bar",
+      "old": "bas"
+    }
   }
 }

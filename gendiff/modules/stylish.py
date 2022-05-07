@@ -20,15 +20,17 @@ def parse_diff(diff):
 def get_diff(diff):
     if not isinstance(diff, dict):
         return '', diff
+    result = None
     values = parse_diff(diff)
     if values[0] and values[1]:
-        return '*', values[0]['val'], values[1]['val']
+        result = '*', values[0]['val'], values[1]['val']
     elif values[0]:
-        return '-', values[0]['val']
+        result = '-', values[0]['val']
     elif values[1]:
-        return '+', values[1]['val']
+        result = '+', values[1]['val']
     else:
-        return '', diff
+        result = '', diff
+    return result
 
 
 def neat_stringify(indent, mark, key_, data):

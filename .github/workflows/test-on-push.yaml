@@ -23,3 +23,6 @@ jobs:
       - name: pytest run
         run: |
           make test
+      - name: pytest-cov run
+        run: |
+          make coverage

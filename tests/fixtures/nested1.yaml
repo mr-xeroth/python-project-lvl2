@@ -16,3 +16,11 @@ group2:
   abc: 12345
   deep:
     id: 45
+group4:
+  default:
+  foo: 0
+  isNested: false
+  nest:
+    bar: ''
+    isNested: true
+  type: bas
