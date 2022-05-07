@@ -102,7 +102,6 @@ def nested_yaml():
 def test_plain_json(index, style, plain_view, plain_json):
     exemplar = plain_view[index]
     json1, json2 = plain_json
-    print ('file1:', json1, '\nfile2:', json2)
     assert generate_diff(json1, json2, style) == exemplar
 
 
