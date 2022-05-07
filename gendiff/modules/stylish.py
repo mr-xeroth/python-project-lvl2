@@ -1,17 +1,7 @@
 #!/usr/bin/env python3
 import sys
 
-
-def stringify(value):
-    translate = {True: 'true', False: 'false', None: 'null'}
-    if type(value) is int:
-        return str(value)
-    else:
-        new = translate.get(value)
-        if new:
-            return new
-        else:
-            return value
+from gendiff.modules.stringify import stringify
 
 
 def parse_diff(diff):

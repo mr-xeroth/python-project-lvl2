@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 import sys
 
+from gendiff.modules.stringify import stringify
 
-def stringify(value):
-    translate = {True: 'true', False: 'false', None: 'null'}
-    new = translate.get(value)
-    return new if new else f"'{value}'"
+
+def string_empty(func):
+    def wrap (value):
+        result = None
+        if value == '':
+            result = "''"
+        else:
+            result = func(value)
+        return result
+    return wrap
+
+stringify = string_empty(stringify)
 
 
 def parse_diff(diff):
