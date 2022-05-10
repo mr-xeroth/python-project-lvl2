@@ -20,12 +20,9 @@ jobs:
       - name: flake8 run
         run: |
           make lint
-      - name: pytest run
-        run: |
-          make test
       - name: Test & publish code coverage
         env:
-          CC_TEST_REPORTER_ID: 8e1ed92de590fc77c73fe71948474a373195fd7c0ad7e48d30a14db22a55851b
+          CC_TEST_REPORTER_ID: ${{ secrets.MY_CC_TESTREP_ID }}
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
