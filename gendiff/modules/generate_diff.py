@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 import sys
+import json
+import yaml
+
+from gendiff.modules.stylish import stylish
+from gendiff.modules.plain import plain
+from gendiff.modules.jsonify import jsonify
 
 
 def parse_key(key_, dicts):
@@ -42,6 +48,25 @@ def parse(dict1, dict2):
             output[each] = result
         return output
     return walk(dict1, dict2)
+
+
+def convert_to_dict(data, format_):
+    result = None
+    if format_ == "yaml":
+        result = yaml.load(data, Loader=yaml.SafeLoader)
+    elif format_ == "json":
+        result = json.loads(data)
+    return result
+
+
+def generate_diff(data1, data2, data_format="json", view_format="stylish"):
+    view_index = {"stylish": stylish, "plain": plain, "json": jsonify}
+
+    dict1 = convert_to_dict(data1, data_format)
+    dict2 = convert_to_dict(data2, data_format)
+
+    if view_format in view_index:
+        return view_index[view_format](parse(dict1, dict2))
 
 
 def main():

@@ -2,10 +2,13 @@
 import sys
 import argparse
 
-from gendiff.core import generate_diff
+from gendiff.modules.generate_diff import generate_diff
 
 
-def main():
+def parse_cli_args():
+    """
+    returns (file1_name, file2_name, data_format, view_format)
+    """
     parser = argparse.ArgumentParser(description='Compares two configuration \
                                      files and shows a difference.')
     parser.add_argument('first_file', type=argparse.FileType('r'))
@@ -20,9 +23,32 @@ def main():
 
     args = parser.parse_args(sys.argv[1:])
 
-    files = [args.first_file.name, args.second_file.name]
+    file_name = args.first_file.name
+    if file_name.endswith('.yaml') or file_name.endswith('.yml'):
+        data_format = 'yaml'
+    else:
+        data_format = 'json'
 
-    print(generate_diff(files[0], files[1], args.format))
+    return args.first_file.name,\
+        args.second_file.name,\
+        data_format,\
+        args.format
+
+
+def file_read(file_name):
+    data = None
+    with open(file_name, 'r') as f:
+        data = f.read()
+    return data
+
+
+def main():
+    file1, file2, data_format, view_format = parse_cli_args()
+
+    data1 = file_read(file1)
+    data2 = file_read(file2)
+
+    print(generate_diff(data1, data2, data_format, view_format))
 
 
 if __name__ == '__main__':

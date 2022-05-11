@@ -2,134 +2,56 @@
 import pytest
 import os
 
-from gendiff.core import generate_diff
+from gendiff.modules.generate_diff import generate_diff
 
+json_file_names = ("nested1.json", "nested2.json")
 
-plain_json_file = ("plain1.json", "plain2.json")
+yaml_file_names = ("nested1.yaml", "nested2.yaml")
 
-plain_yaml_file = ("plain1.yaml", "plain2.yaml")
+view_file_names = ("nested_stylish.txt", "nested_plain.txt",
+                   "nested_json.txt")
 
-plain_view_file = ("plain_stylish.txt", "plain_plain.txt", "plain_json.txt")
-
-nested_json_file = ("nested1.json", "nested2.json")
-
-nested_yaml_file = ("nested1.yaml", "nested2.yaml")
-
-nested_view_file = ("nested_stylish.txt", "nested_plain.txt",
-                    "nested_json.txt")
-
-tags = ("stylish", "plain", "json")
+views = ("stylish", "plain", "json")
 
 variants = (
-    (0, tags[0]),
-    (1, tags[1]),
-    (2, tags[2])
+    ("json", views[0]),
+    ("json", views[1]),
+    ("json", views[2]),
+    ("yaml", views[0]),
+    ("yaml", views[1]),
+    ("yaml", views[2])
 )
 
 
-def get_file_path(file_name):
+def get_file_path(file, folder):
     cwd = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(cwd, 'fixtures', file_name)
-
-
-def batch_file_rename(files):
-    text = []
-    for name in files:
-        text.append(get_file_path(name))
-    return text
+    return os.path.join(cwd, folder, file)
 
 
 def batch_read(files):
     text = []
     for name in files:
-        with open(get_file_path(name), 'r') as f:
+        with open(get_file_path(name, 'fixtures'), 'r') as f:
             text.append(f.read())
-    return text
+    return tuple(text)
 
 
-#
-#   PLAIN VIEW
-#
 @pytest.fixture
-def plain_view():
-    return batch_read(plain_view_file)
+def expected_views():
+    values = batch_read(view_file_names)
+    return dict(zip(views, values))
 
 
-#
-#   PLAIN JSON
-#
 @pytest.fixture
-def plain_json():
-    return batch_file_rename(plain_json_file)
+def source_data():
+    return {"json": batch_read(json_file_names),
+            "yaml": batch_read(yaml_file_names)}
 
 
-#
-#   PLAIN YAML
-#
-@pytest.fixture
-def plain_yaml():
-    return batch_file_rename(plain_yaml_file)
+@pytest.mark.parametrize("source_format,view", variants)
+def test_plain_json(source_data, source_format, view, expected_views):
 
+    data1, data2 = source_data[source_format]
 
-#
-#   NESTED VIEW
-#
-@pytest.fixture
-def nested_view():
-    return batch_read(nested_view_file)
-
-
-#
-#   NESTED JSON
-#
-@pytest.fixture
-def nested_json():
-    return batch_file_rename(nested_json_file)
-
-
-#
-#   NESTED YAML
-#
-@pytest.fixture
-def nested_yaml():
-    return batch_file_rename(nested_yaml_file)
-
-
-#
-#   TEST PLAIN JSON
-#
-@pytest.mark.parametrize("index,style", variants)
-def test_plain_json(index, style, plain_view, plain_json):
-    exemplar = plain_view[index]
-    json1, json2 = plain_json
-    assert generate_diff(json1, json2, style) == exemplar
-
-
-#
-#   TEST PLAIN YAML
-#
-@pytest.mark.parametrize("index,style", variants)
-def test_plain_yaml(index, style, plain_view, plain_yaml):
-    exemplar = plain_view[index]
-    yaml1, yaml2 = plain_yaml
-    assert generate_diff(yaml1, yaml2, style) == exemplar
-
-
-#
-#   TEST NESTED JSON
-#
-@pytest.mark.parametrize("index,style", variants)
-def test_nested_json(index, style, nested_view, nested_json):
-    exemplar = nested_view[index]
-    json1, json2 = nested_json
-    assert generate_diff(json1, json2, style) == exemplar
-
-
-#
-#   TEST NESTED YAML
-#
-@pytest.mark.parametrize("index,style", variants)
-def test_nested_yaml(index, style, nested_view, nested_yaml):
-    exemplar = nested_view[index]
-    yaml1, yaml2 = nested_yaml
-    assert generate_diff(yaml1, yaml2, style) == exemplar
+    assert generate_diff(data1, data2, source_format, view) == \
+        expected_views[view]
