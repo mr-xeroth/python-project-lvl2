@@ -49,9 +49,9 @@ def source_data():
 
 
 @pytest.mark.parametrize("source_format,view", variants)
-def test_plain_json(source_data, source_format, view, expected_views):
+def test_generate_diff(source_data, source_format, view, expected_views):
 
     data1, data2 = source_data[source_format]
 
-    assert generate_diff(data1, data2, source_format, view) == \
+    assert generate_diff(data1, data2, view, source_format) == \
         expected_views[view]

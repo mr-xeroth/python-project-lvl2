@@ -45,10 +45,9 @@ def file_read(file_name):
 def main():
     file1, file2, data_format, view_format = parse_cli_args()
 
-    data1 = file_read(file1)
-    data2 = file_read(file2)
+    data1, data2 = file_read(file1), file_read(file2)
 
-    print(generate_diff(data1, data2, data_format, view_format))
+    print(generate_diff(data1, data2, view_format, data_format))
 
 
 if __name__ == '__main__':
