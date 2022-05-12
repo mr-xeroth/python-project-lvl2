@@ -28,29 +28,10 @@ def parse_cli_args():
         args.format
 
 
-def get_file_format(file_name):
-    format_ = None
-    if file_name.endswith('.yaml') or file_name.endswith('.yml'):
-        format_ = 'yaml'
-    elif file_name.endswith('.json'):
-        format_ = 'json'
-    return format_
-
-
-def file_read(file_name):
-    data = None
-    with open(file_name, 'r') as f:
-        data = f.read()
-    return data
-
-
 def main():
     file1, file2, view_format = parse_cli_args()
 
-    data1, data2 = file_read(file1), file_read(file2)
-    data1_type, data2_type = get_file_format(file1), get_file_format(file2)
-
-    print(generate_diff(data1, data1_type, data2, data2_type, view_format))
+    print(generate_diff(file1, file2, view_format))
 
 
 if __name__ == '__main__':

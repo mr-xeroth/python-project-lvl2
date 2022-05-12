@@ -37,7 +37,7 @@ def convert_to_dict(data, type_):
     return result
 
 
-def json_compare(data1, type1, data2, type2, view_format):
+def json_compare(data1, type1, data2, type2):
 
     dict1 = convert_to_dict(data1, type1)
     dict2 = convert_to_dict(data2, type2)
