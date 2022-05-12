@@ -28,19 +28,19 @@ def parse_format(flags, data):
     return result
 
 
-def convert_to_dict(data, data_format):
+def convert_to_dict(data, type_):
     result = None
-    if data_format == "yaml":
+    if type_ == "yaml":
         result = yaml.load(data, Loader=yaml.SafeLoader)
-    else:
+    if type_ == "json":
         result = json.loads(data)
     return result
 
 
-def json_compare(data1, data2, data_format):
+def json_compare(data1, type1, data2, type2, view_format):
 
-    dict1 = convert_to_dict(data1, data_format)
-    dict2 = convert_to_dict(data2, data_format)
+    dict1 = convert_to_dict(data1, type1)
+    dict2 = convert_to_dict(data2, type2)
 
     def walk(dict1, dict2):
         output = {}

@@ -13,13 +13,17 @@ view_file_names = ("nested_stylish.txt", "nested_plain.txt",
 
 views = ("stylish", "plain", "json")
 
+types = ("json1", "json2", "yaml1", "yaml2")
+
 variants = (
-    ("json", views[0]),
-    ("json", views[1]),
-    ("json", views[2]),
-    ("yaml", views[0]),
-    ("yaml", views[1]),
-    ("yaml", views[2])
+    (types[0], types[1], views[0]),
+    (types[0], types[1], views[1]),
+    (types[0], types[1], views[2]),
+    (types[2], types[3], views[0]),
+    (types[2], types[3], views[1]),
+    (types[2], types[3], views[2]),
+    (types[0], types[3], views[0]),
+    (types[2], types[1], views[0])
 )
 
 
@@ -44,14 +48,13 @@ def expected_views():
 
 @pytest.fixture
 def source_data():
-    return {"json": batch_read(json_file_names),
-            "yaml": batch_read(yaml_file_names)}
+    values = batch_read(json_file_names) + batch_read(yaml_file_names)
+    return dict(zip(types, values))
 
 
-@pytest.mark.parametrize("source_format,view", variants)
-def test_generate_diff(source_data, source_format, view, expected_views):
+@pytest.mark.parametrize("type1,type2,view", variants)
+def test_generate_diff(source_data, type1, type2, view, expected_views):
 
-    data1, data2 = source_data[source_format]
-
-    assert generate_diff(data1, data2, view, source_format) == \
+    data1, data2 = source_data[type1], source_data[type2]
+    assert generate_diff(data1, type1[:-1], data2, type2[:-1], view) == \
         expected_views[view]
