@@ -6,13 +6,7 @@ import json
 def get_diff(key_, diff):
     new_key, value = None, None
     if 'type' in diff and 'value' in diff:
-        if diff['type'] == 'updated':
-            value = {
-                'old': diff['value']['old'],
-                'new': diff['value']['new']
-            }
-        else:
-            value = diff['value']
+        value = diff['value']
         new_key = key_ + f'__{diff["type"]}'
     return new_key, value
 

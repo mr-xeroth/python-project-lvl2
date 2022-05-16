@@ -46,9 +46,7 @@ def generate_diff(file1, file2, view_format="stylish"):
     dict1 = convert_to_dict(data1, type1)
     dict2 = convert_to_dict(data2, type2)
 
-    return view_index[view_format](
-        dict_compare(dict1, dict2)
-    )
+    return view_index[view_format](dict_compare(dict1, dict2))
 
 
 def main():
