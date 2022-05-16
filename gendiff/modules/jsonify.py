@@ -3,32 +3,17 @@ import sys
 import json
 
 
-def parse_diff(diff):
-    diffs = "diff-", "diff+"
-    values = []
-    for x in diffs:
-        try:
-            value = diff[x]
-        except KeyError:
-            values.append(None)
-        else:
-            # insulate bool values
-            values.append({'val': value})
-    return values
-
-
 def get_diff(key_, diff):
-    values = parse_diff(diff)
     new_key, value = None, None
-    if values[0] and values[1]:
-        new_key = key_ + '__updated'
-        value = {'old': values[0]['val'], 'new': values[1]['val']}
-    elif values[0]:
-        new_key = key_ + '__removed'
-        value = values[0]['val']
-    elif values[1]:
-        new_key = key_ + '__added'
-        value = values[1]['val']
+    if 'type' in diff and 'value' in diff:
+        if diff['type'] == 'updated':
+            value = {
+                'old': diff['value']['old'],
+                'new': diff['value']['new']
+            }
+        else:
+            value = diff['value']
+        new_key = key_ + f'__{diff["type"]}'
     return new_key, value
 
 

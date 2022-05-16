@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import sys
+import json
+import yaml
 
-from gendiff.modules.json_parse import json_compare
+from gendiff.modules.dict_compare import dict_compare
 from gendiff.modules.stylish import stylish
 from gendiff.modules.plain import plain
 from gendiff.modules.jsonify import jsonify
@@ -23,6 +25,15 @@ def get_file_format(file_name):
     return format_
 
 
+def convert_to_dict(data, type_):
+    result = None
+    if type_ == "yaml":
+        result = yaml.load(data, Loader=yaml.SafeLoader)
+    if type_ == "json":
+        result = json.loads(data)
+    return result
+
+
 def generate_diff(file1, file2, view_format="stylish"):
     view_index = {"stylish": stylish, "plain": plain, "json": jsonify}
 
@@ -32,8 +43,11 @@ def generate_diff(file1, file2, view_format="stylish"):
     data1, type1 = file_read(file1), get_file_format(file1)
     data2, type2 = file_read(file2), get_file_format(file2)
 
+    dict1 = convert_to_dict(data1, type1)
+    dict2 = convert_to_dict(data2, type2)
+
     return view_index[view_format](
-        json_compare(data1, type1, data2, type2)
+        dict_compare(dict1, dict2)
     )
 
 

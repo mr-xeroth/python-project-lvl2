@@ -18,30 +18,33 @@ def quote_string(func):
 stringify = quote_string(stringify)
 
 
+def filter_value(value):
+    if isinstance(value, dict):
+        return '[complex value]'
+    else:
+        return stringify(value)
+
+
 def parse_diff(diff):
-    diffs = "diff-", "diff+"
-    values = []
-    for x in diffs:
-        try:
-            value = diff[x]
-        except KeyError:
-            values.append(None)
-        else:
-            if isinstance(value, dict):
-                values.append('[complex value]')
-            else:
-                values.append(stringify(value))
-    return values
+    if diff['type'] == 'updated':
+        result = filter_value(diff['value']['old']),\
+            filter_value(diff['value']['new'])
+    elif diff['type'] == 'removed':
+        result = filter_value(diff['value']), None
+    elif diff['type'] == 'added':
+        result = None, filter_value(diff['value'])
+    return result
 
 
-def get_diff(key, diff):
-    values = parse_diff(diff)
-    if values[0] and values[1]:
-        return f" updated. From {values[0]} to {values[1]}\n"
-    elif values[0]:
-        return " removed\n"
-    elif values[1]:
-        return f" added with value: {values[1]}\n"
+def get_diff(diff):
+    if 'type' in diff and 'value' in diff:
+        values = parse_diff(diff)
+        if values[0] and values[1]:
+            return f" updated. From {values[0]} to {values[1]}\n"
+        elif values[0]:
+            return " removed\n"
+        elif values[1]:
+            return f" added with value: {values[1]}\n"
 
 
 def plain(diff):
@@ -53,9 +56,10 @@ def plain(diff):
                 node_name = path + f'.{each}'
             else:
                 node_name = str(each)
+
             opening = f"Property '{node_name}' was"
 
-            if (closing := get_diff(each, diff[each])):
+            if (closing := get_diff(diff[each])):
                 output += opening + closing
             else:
                 output += walk(diff[each], node_name)

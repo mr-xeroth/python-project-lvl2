@@ -6,57 +6,38 @@ from gendiff.modules.generate_diff import generate_diff
 
 FIXTURES = 'fixtures'
 
-json_file_names = ("nested1.json", "nested2.json")
+source_formats = ("json", "yaml")
 
-yaml_file_names = ("nested1.yaml", "nested2.yaml")
-
-view_file_names = ("nested_stylish.txt", "nested_plain.txt",
-                   "nested_json.txt")
-
-views = ("stylish", "plain", "json")
-
-types = ("json1", "json2", "yaml1", "yaml2")
-
-variants = (
-    (types[0], types[1], views[0]),
-    (types[0], types[1], views[1]),
-    (types[0], types[1], views[2]),
-    (types[2], types[3], views[0]),
-    (types[2], types[3], views[1]),
-    (types[2], types[3], views[2]),
-    (types[0], types[3], views[0]),
-    (types[2], types[1], views[0])
-)
+view_formats = ("stylish", "plain", "json")
 
 
-def get_file_path(file, folder):
+def get_file_by_path(file, folder):
     cwd = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(cwd, folder, file)
 
 
-def batch_read(files):
-    text = []
-    for name in files:
-        with open(get_file_path(name, FIXTURES), 'r') as f:
-            text.append(f.read())
-    return tuple(text)
+@pytest.fixture
+def file1(request):
+    type = request.param
+    return get_file_by_path(f'file1.{type}', FIXTURES)
 
 
 @pytest.fixture
-def expected_views():
-    values = batch_read(view_file_names)
-    return dict(zip(views, values))
+def file2(request):
+    type = request.param
+    return get_file_by_path(f'file2.{type}', FIXTURES)
 
 
 @pytest.fixture
-def source_files():
-    values = (get_file_path(n, FIXTURES) for n in
-              (json_file_names + yaml_file_names))
-    return dict(zip(types, values))
+def expected_view(request):
+    view_format = request.getfixturevalue('view_format')
+    with open(get_file_by_path(f'view_{view_format}.txt', FIXTURES), 'r') as f:
+        expected = f.read()
+    return expected
 
 
-@pytest.mark.parametrize("type1,type2,view", variants)
-def test_generate_diff(source_files, type1, type2, expected_views, view):
-
-    file1, file2 = source_files[type1], source_files[type2]
-    assert generate_diff(file1, file2, view) == expected_views[view]
+@pytest.mark.parametrize("view_format", view_formats)
+@pytest.mark.parametrize("file1", source_formats, indirect=True)
+@pytest.mark.parametrize("file2", source_formats, indirect=True)
+def test_generate_diff(file1, file2, view_format, expected_view):
+    assert generate_diff(file1, file2, view_format) == expected_view
