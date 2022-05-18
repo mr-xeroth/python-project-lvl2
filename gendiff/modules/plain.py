@@ -25,26 +25,19 @@ def filter_value(value):
         return stringify(value)
 
 
-def parse_diff(diff):
-    if diff['type'] == 'updated':
-        result = filter_value(diff['value']['old']),\
-            filter_value(diff['value']['new'])
-    elif diff['type'] == 'removed':
-        result = filter_value(diff['value']), None
-    elif diff['type'] == 'added':
-        result = None, filter_value(diff['value'])
-    return result
-
-
 def get_diff(diff):
+    report = None
     if 'type' in diff and 'value' in diff:
-        values = parse_diff(diff)
-        if values[0] and values[1]:
-            return f" updated. From {values[0]} to {values[1]}\n"
-        elif values[0]:
-            return " removed\n"
-        elif values[1]:
-            return f" added with value: {values[1]}\n"
+
+        if diff['type'] == 'updated':
+            values = [filter_value(x) for x in [diff['value']['old'],
+                                                diff['value']['new']]]
+            report = f" updated. From {values[0]} to {values[1]}\n"
+        elif diff['type'] == 'removed':
+            report = " removed\n"
+        elif diff['type'] == 'added':
+            report = f" added with value: {filter_value(diff['value'])}\n"
+    return report
 
 
 def plain(diff):

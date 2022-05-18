@@ -5,26 +5,31 @@ from gendiff.modules.stringify import stringify
 
 
 def get_diff(diff):
+    mark, values = None, None
+    types = {'untouched': ' ', 'updated': '*', 'removed': '-', 'added': '+'}
+    # simple value that isn't of dict type
     if not isinstance(diff, dict):
         return '', diff
+    # unpack values from "diff" kind of dict
     if 'type' in diff and 'value' in diff:
-        if diff['type'] == 'updated':
-            result = '*', diff['value']['old'], diff['value']['new']
-        elif diff['type'] == 'removed':
-            result = '-', diff['value']
-        elif diff['type'] == 'added':
-            result = '+', diff['value']
+        mark = types[diff['type']]
+        if mark == '*':
+            values = mark, diff['value']['old'], diff['value']['new']
+        else:
+            values = mark, diff['value']
     else:
-        result = '', diff
-    return result
+        # nondiff dict
+        values = '', diff
+
+    return values
 
 
-def neat_stringify(indent, mark, key_, data):
+def stylish_format(indent, mark, key_, data):
     double = ''
     template = '{}{} {}: {}\n'
     if not mark:
         mark = ' '
-    elif mark == '*':
+    if mark == '*':
         mark = '-'
         double = template.format(indent, mark, key_, next(data))
         mark = '+'
@@ -39,10 +44,9 @@ def stylish(data, indent=4):
         tab_indent = tab_close + (indent - 2) * ' '
         output = ''
         for each in data.keys():
-            # list of sorts [diff_mark, value1_pos, value2_opt]
-            values = get_diff(data[each])
-            parsed = map(lambda x: walk(x, depth + 1), values[1:])
-            output += neat_stringify(tab_indent, values[0], each, parsed)
+            mark, *values = get_diff(data[each])
+            parsed = map(lambda x: walk(x, depth + 1), values)
+            output += stylish_format(tab_indent, mark, each, parsed)
         return '{\n' + output + f'{tab_close}}}'
     return walk(data, 0)
 

@@ -2,49 +2,31 @@
 import sys
 
 
-def parse_key(key_, dicts):
-    flags = []
-    data = []
-    for x in range(len(dicts)):
-        try:
-            value = dicts[x][key_]
-        except KeyError:
-            flags.append(False)
-            data.append(None)
-        else:
-            flags.append(True)
-            data.append(value)
-    return flags, data
-
-
-def get_diff(flags, data):
-    diff_keys = ['diff-', 'diff+']
-    result = {}
-    for i, diff in enumerate(diff_keys):
-        if flags[i]:
-            result.update({diff: data[i]})
-    return result
-
-
-def diff_format(diff):
+def diff_format(key_, key_entries, dict1, dict2):
     result = None
-    if 'diff-' in diff and 'diff+' in diff:
-        result = {
-            'type': 'updated',
-            'value': {
-                'old': diff['diff-'],
-                'new': diff['diff+']
+    if all(key_entries):
+        if dict1[key_] == dict2[key_]:
+            result = {
+                'type': 'untouched',
+                'value': dict1[key_]
             }
-        }
-    elif 'diff-' in diff:
+        else:
+            result = {
+                'type': 'updated',
+                'value': {
+                    'old': dict1[key_],
+                    'new': dict2[key_]
+                }
+            }
+    elif key_entries[0]:
         result = {
             'type': 'removed',
-            'value': diff['diff-']
+            'value': dict1[key_]
         }
-    elif 'diff+' in diff:
+    elif key_entries[1]:
         result = {
             'type': 'added',
-            'value': diff['diff+']
+            'value': dict2[key_]
         }
     return result
 
@@ -54,13 +36,21 @@ def dict_compare(dict1, dict2):
     keys_combined = sorted(set.union(set(dict1), set(dict2)))
     for each in keys_combined:
         result = None
-        is_value, data = parse_key(each, [dict1, dict2])
-        if all(is_value) and (data[0] == data[1]):
-            result = data[0]
-        elif all([isinstance(x, dict) for x in data]):
-            result = dict_compare(data[0], data[1])
+        keys_exist = []
+        keys_exist.append(True if each in dict1 else False)
+        keys_exist.append(True if each in dict2 else False)
+
+        nodes_are_dict = None
+        if all(keys_exist):
+            nodes_are_dict = all(
+                [isinstance(x, dict) for x in (dict1[each], dict2[each])]
+            )
+
+        if nodes_are_dict:
+            result = dict_compare(dict1[each], dict2[each])
         else:
-            result = diff_format(get_diff(is_value, data))
+            result = diff_format(each, keys_exist, dict1, dict2)
+
         output[each] = result
     return output
 
