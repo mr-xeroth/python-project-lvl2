@@ -36,11 +36,10 @@ def dict_compare(dict1, dict2):
     keys_combined = sorted(set.union(set(dict1), set(dict2)))
     for each in keys_combined:
         result = None
-        keys_exist = []
-        keys_exist.append(True if each in dict1 else False)
-        keys_exist.append(True if each in dict2 else False)
+        keys_exist = [each in x for x in (dict1, dict2)]
 
         nodes_are_dict = None
+
         if all(keys_exist):
             nodes_are_dict = all(
                 [isinstance(x, dict) for x in (dict1[each], dict2[each])]

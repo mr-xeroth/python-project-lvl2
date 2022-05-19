@@ -18,14 +18,14 @@ def get_file_by_path(file, folder):
 
 @pytest.fixture
 def file1(request):
-    type = request.param
-    return get_file_by_path(f'file1.{type}', FIXTURES)
+    type_ = request.param
+    return get_file_by_path(f'file1.{type_}', FIXTURES)
 
 
 @pytest.fixture
 def file2(request):
-    type = request.param
-    return get_file_by_path(f'file2.{type}', FIXTURES)
+    type_ = request.param
+    return get_file_by_path(f'file2.{type_}', FIXTURES)
 
 
 @pytest.fixture
