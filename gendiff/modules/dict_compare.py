@@ -2,7 +2,7 @@
 import sys
 
 
-def diff_format(key_, key_entries, nodes):
+def diff_format(key_entries, nodes):
     result = None
     if all(key_entries):
         if nodes[0] == nodes[1]:
@@ -51,7 +51,7 @@ def dict_compare(dict1, dict2):
         if all(nodes_are_dict):
             result = dict_compare(nodes[0], nodes[1])
         else:
-            result = diff_format(each, keys_exist, nodes)
+            result = diff_format(keys_exist, nodes)
 
         output[each] = result
     return output
