@@ -2,31 +2,31 @@
 import sys
 
 
-def diff_format(key_, key_entries, dict1, dict2):
+def diff_format(key_, key_entries, nodes):
     result = None
     if all(key_entries):
-        if dict1[key_] == dict2[key_]:
+        if nodes[0] == nodes[1]:
             result = {
                 'type': 'untouched',
-                'value': dict1[key_]
+                'value': nodes[0]
             }
         else:
             result = {
                 'type': 'updated',
                 'value': {
-                    'old': dict1[key_],
-                    'new': dict2[key_]
+                    'old': nodes[0],
+                    'new': nodes[1]
                 }
             }
     elif key_entries[0]:
         result = {
             'type': 'removed',
-            'value': dict1[key_]
+            'value': nodes[0]
         }
     elif key_entries[1]:
         result = {
             'type': 'added',
-            'value': dict2[key_]
+            'value': nodes[1]
         }
     return result
 
@@ -36,19 +36,22 @@ def dict_compare(dict1, dict2):
     keys_combined = sorted(set.union(set(dict1), set(dict2)))
     for each in keys_combined:
         result = None
+
         keys_exist = [each in x for x in (dict1, dict2)]
 
-        nodes_are_dict = None
+        combo = zip(keys_exist, (dict1, dict2))
+
+        nodes = [x[1][each] if x[0] else None for x in combo]
 
         if all(keys_exist):
-            nodes_are_dict = all(
-                [isinstance(x, dict) for x in (dict1[each], dict2[each])]
-            )
-
-        if nodes_are_dict:
-            result = dict_compare(dict1[each], dict2[each])
+            nodes_are_dict = [isinstance(x, dict) for x in nodes]
         else:
-            result = diff_format(each, keys_exist, dict1, dict2)
+            nodes_are_dict = [False]
+
+        if all(nodes_are_dict):
+            result = dict_compare(nodes[0], nodes[1])
+        else:
+            result = diff_format(each, keys_exist, nodes)
 
         output[each] = result
     return output
