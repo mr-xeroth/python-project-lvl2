@@ -25,6 +25,22 @@ def filter_value(value):
         return stringify(value)
 
 
+def plain_report(node, node_name):
+    closing = None
+
+    if node['type'] == 'updated':
+        values = [filter_value(x) for x in
+                  [node['value']['old'], node['value']['new']]]
+        closing = f" updated. From {values[0]} to {values[1]}\n"
+    elif node['type'] == 'removed':
+        closing = " removed\n"
+    elif node['type'] == 'added':
+        closing = f" added with value: {filter_value(node['value'])}\n"
+
+    if closing:
+        return f"Property '{node_name}' was" + closing
+
+
 def plain(diff):  # noqa: C901
     def walk(diff, path):
         output = ''
@@ -36,22 +52,12 @@ def plain(diff):  # noqa: C901
                 node_name = str(key)
 
             node = diff[key]
-            closing = None
+
             if 'type' in node and 'value' in node:
-                if node['type'] == 'updated':
-                    values = [filter_value(x) for x in
-                              [node['value']['old'],
-                              node['value']['new']]]
-                    closing = f" updated. From {values[0]} to {values[1]}\n"
-                elif node['type'] == 'removed':
-                    closing = " removed\n"
-                elif node['type'] == 'added':
-                    closing = f" added with value: \
-{filter_value(node['value'])}\n"
-                elif node['type'] == 'nested':
+                if node['type'] == 'nested':
                     output += walk(node['value'], node_name)
-                if closing:
-                    output += f"Property '{node_name}' was" + closing
+                elif report := plain_report(node, node_name):
+                    output += report
         return output
     return walk(diff, '').rstrip('\n')
 
