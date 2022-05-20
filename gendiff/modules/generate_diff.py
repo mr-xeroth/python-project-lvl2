@@ -4,9 +4,7 @@ import json
 import yaml
 
 from gendiff.modules.dict_compare import dict_compare
-from gendiff.modules.stylish import stylish
-from gendiff.modules.plain import plain
-from gendiff.modules.jsonify import jsonify
+from gendiff.formatter.generate_view import generate_view
 
 
 def file_read(file_name):
@@ -35,10 +33,6 @@ def convert_to_dict(data, type_):
 
 
 def generate_diff(file1, file2, view_format="stylish"):
-    view_index = {"stylish": stylish, "plain": plain, "json": jsonify}
-
-    if view_format not in view_index:
-        return
 
     data1, type1 = file_read(file1), get_file_format(file1)
     data2, type2 = file_read(file2), get_file_format(file2)
@@ -46,7 +40,7 @@ def generate_diff(file1, file2, view_format="stylish"):
     dict1 = convert_to_dict(data1, type1)
     dict2 = convert_to_dict(data2, type2)
 
-    return view_index[view_format](dict_compare(dict1, dict2))
+    return generate_view(dict_compare(dict1, dict2), view_format)
 
 
 def main():

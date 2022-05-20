@@ -1,79 +1,163 @@
 {
   "common": {
-    "follow__added": false,
-    "setting1__untouched": "Value 1",
-    "setting2__removed": 200,
-    "setting3__updated": {
-      "new": null,
-      "old": true
-    },
-    "setting4__added": "blah blah",
-    "setting5__added": {
-      "key5": "value5"
-    },
-    "setting6": {
-      "doge": {
-        "wow__updated": {
-          "new": "so much",
-          "old": ""
+    "type": "nested",
+    "value": {
+      "follow": {
+        "type": "added",
+        "value": false
+      },
+      "setting1": {
+        "type": "untouched",
+        "value": "Value 1"
+      },
+      "setting2": {
+        "type": "removed",
+        "value": 200
+      },
+      "setting3": {
+        "type": "updated",
+        "value": {
+          "new": null,
+          "old": true
         }
       },
-      "key__untouched": "value",
-      "ops__added": "vops"
+      "setting4": {
+        "type": "added",
+        "value": "blah blah"
+      },
+      "setting5": {
+        "type": "added",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      "setting6": {
+        "type": "nested",
+        "value": {
+          "doge": {
+            "type": "nested",
+            "value": {
+              "wow": {
+                "type": "updated",
+                "value": {
+                  "new": "so much",
+                  "old": ""
+                }
+              }
+            }
+          },
+          "key": {
+            "type": "untouched",
+            "value": "value"
+          },
+          "ops": {
+            "type": "added",
+            "value": "vops"
+          }
+        }
+      }
     }
   },
   "group1": {
-    "baz__updated": {
-      "new": "bars",
-      "old": "bas"
-    },
-    "foo__untouched": "bar",
-    "nest__updated": {
-      "new": "str",
-      "old": {
-        "key": "value"
+    "type": "nested",
+    "value": {
+      "baz": {
+        "type": "updated",
+        "value": {
+          "new": "bars",
+          "old": "bas"
+        }
+      },
+      "foo": {
+        "type": "untouched",
+        "value": "bar"
+      },
+      "nest": {
+        "type": "updated",
+        "value": {
+          "new": "str",
+          "old": {
+            "key": "value"
+          }
+        }
       }
     }
   },
-  "group2__removed": {
-    "abc": 12345,
-    "deep": {
-      "id": 45
+  "group2": {
+    "type": "removed",
+    "value": {
+      "abc": 12345,
+      "deep": {
+        "id": 45
+      }
     }
   },
-  "group3__added": {
-    "deep": {
-      "id": {
-        "number": 45
-      }
-    },
-    "fee": 100500
+  "group3": {
+    "type": "added",
+    "value": {
+      "deep": {
+        "id": {
+          "number": 45
+        }
+      },
+      "fee": 100500
+    }
   },
   "group4": {
-    "default__updated": {
-      "new": "",
-      "old": null
-    },
-    "foo__updated": {
-      "new": null,
-      "old": 0
-    },
-    "isNested__updated": {
-      "new": "none",
-      "old": false
-    },
-    "key__added": false,
-    "nest": {
-      "bar__updated": {
-        "new": 0,
-        "old": ""
+    "type": "nested",
+    "value": {
+      "default": {
+        "type": "updated",
+        "value": {
+          "new": "",
+          "old": null
+        }
       },
-      "isNested__removed": true
-    },
-    "someKey__added": true,
-    "type__updated": {
-      "new": "bar",
-      "old": "bas"
+      "foo": {
+        "type": "updated",
+        "value": {
+          "new": null,
+          "old": 0
+        }
+      },
+      "isNested": {
+        "type": "updated",
+        "value": {
+          "new": "none",
+          "old": false
+        }
+      },
+      "key": {
+        "type": "added",
+        "value": false
+      },
+      "nest": {
+        "type": "nested",
+        "value": {
+          "bar": {
+            "type": "updated",
+            "value": {
+              "new": 0,
+              "old": ""
+            }
+          },
+          "isNested": {
+            "type": "removed",
+            "value": true
+          }
+        }
+      },
+      "someKey": {
+        "type": "added",
+        "value": true
+      },
+      "type": {
+        "type": "updated",
+        "value": {
+          "new": "bar",
+          "old": "bas"
+        }
+      }
     }
   }
 }

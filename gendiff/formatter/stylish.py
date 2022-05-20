@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
 import sys
 
-from gendiff.modules.stringify import stringify
+from gendiff.formatter.stringify import stringify
 
 
 def get_diff(diff):
     mark, values = None, None
-    types = {'untouched': ' ', 'updated': '*', 'removed': '-', 'added': '+'}
+    types = {
+        'nested': ' ',
+        'untouched': ' ',
+        'updated': '*',
+        'removed': '-',
+        'added': '+'
+    }
+
     # simple value that isn't of dict type
     if not isinstance(diff, dict):
         return '', diff
+
     # unpack values from "diff" kind of dict
     if 'type' in diff and 'value' in diff:
         mark = types[diff['type']]
