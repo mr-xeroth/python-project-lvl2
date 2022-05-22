@@ -41,17 +41,11 @@ def plain_report(node, node_name):
         return f"Property '{node_name}' was" + closing
 
 
-def plain(diff):  # noqa: C901
+def plain(diff):
     def walk(diff, path):
         output = ''
-        keys = [x for x in diff.keys() if isinstance(diff[x], dict)]
-        for key in keys:
-            if path:
-                node_name = path + f'.{key}'
-            else:
-                node_name = str(key)
-
-            node = diff[key]
+        for key, node in diff.items():
+            node_name = path + f'.{key}' if path else str(key)
 
             if 'type' in node and 'value' in node:
                 if node['type'] == 'nested':
