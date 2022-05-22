@@ -18,7 +18,9 @@ def quote_string(func):
 stringify = quote_string(stringify)
 
 
+# replace dict type for a "here lies dict"
 def filter_value(value):
+
     if isinstance(value, dict):
         return '[complex value]'
     else:
@@ -29,11 +31,13 @@ def plain_report(node, node_name):
     closing = None
 
     if node['type'] == 'updated':
-        values = [filter_value(x) for x in
-                  [node['value']['old'], node['value']['new']]]
+        values = (filter_value(node['value']['old']),
+                  filter_value(node['value']['new']))
         closing = f" updated. From {values[0]} to {values[1]}\n"
+
     elif node['type'] == 'removed':
         closing = " removed\n"
+
     elif node['type'] == 'added':
         closing = f" added with value: {filter_value(node['value'])}\n"
 
@@ -47,11 +51,10 @@ def plain(diff):
         for key, node in diff.items():
             node_name = path + f'.{key}' if path else str(key)
 
-            if 'type' in node and 'value' in node:
-                if node['type'] == 'nested':
-                    output += walk(node['value'], node_name)
-                elif report := plain_report(node, node_name):
-                    output += report
+            if node['type'] == 'nested':
+                output += walk(node['value'], node_name)
+            elif report := plain_report(node, node_name):
+                output += report
         return output
     return walk(diff, '').rstrip('\n')
 
