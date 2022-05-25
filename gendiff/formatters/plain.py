@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-import sys
-
 from gendiff.formatter.stringify import stringify
 
 
@@ -57,11 +54,3 @@ def plain(diff):
                 output += report
         return output
     return walk(diff, '').rstrip('\n')
-
-
-def main():
-    print(sys.modules[__name__])
-
-
-if __name__ == '__main__':
-    main()

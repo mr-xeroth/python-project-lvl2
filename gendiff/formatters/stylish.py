@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-import sys
+""" runs selected formatter with diff data. """
 
 from gendiff.formatter.stringify import stringify
 
@@ -57,11 +56,3 @@ def stylish(data, indent=4):
             output += stylish_format(tab_indent, mark, each, parsed)
         return '{\n' + output + f'{tab_close}}}'
     return walk(data, 0)
-
-
-def main():
-    print(sys.modules[__name__])
-
-
-if __name__ == '__main__':
-    main()

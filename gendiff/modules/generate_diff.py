@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+""" parses cli args and prints diff in chosen format. """
+
 import sys
 import json
 import yaml
 
 from gendiff.modules.dict_compare import dict_compare
-from gendiff.formatter.generate_view import generate_view
+from gendiff.formatters.generate_view import generate_view
 
 
 def file_read(file_name):

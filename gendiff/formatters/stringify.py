@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-import sys
-
-
 def stringify(value):
     translate = {True: 'true', False: 'false', None: 'null'}
     if type(value) is int:
@@ -12,11 +8,3 @@ def stringify(value):
             return new
         else:
             return value
-
-
-def main():
-    print(sys.modules[__name__])
-
-
-if __name__ == '__main__':
-    main()
