@@ -21,7 +21,7 @@ def parse_any_value(value: any, depth: int) -> str:
     if isinstance(value, dict):
         return stylish(value, depth)
     else:
-        return dumps(value)
+        return dumps(value).strip('"')
 
 
 def make_nested_value(tab: str, mark: str, key: any, value: any) -> str:
