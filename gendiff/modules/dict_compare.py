@@ -1,4 +1,4 @@
-""" genearates raw diff data for formatter's processing """
+"""To genearate raw diff data for formatter's processing"""
 
 
 def dict_parse(data):
@@ -18,6 +18,8 @@ def dict_parse(data):
 
 
 def dict_compare(dict1, dict2):
+    '''Takes in two dicts, returns the diff dict of the two'''
+
     output = {}
     keys_combined = sorted(set.union(set(dict1), set(dict2)))
 

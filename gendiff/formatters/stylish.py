@@ -1,4 +1,5 @@
-""" stylish JSON diff formatter. """
+"""Stylish diff formatter"""
+
 from json import dumps
 
 TAB_SIZE = 4
@@ -7,27 +8,28 @@ TAB_FILL = ' '
 TEMPLATE = '{}{} {}: {}'
 
 
-def nested_indent(depth):
+def nested_indent(depth: int) -> str:
     return TAB_FILL * (TAB_SIZE * depth - 2)
 
 
-def bracket_indent(depth):
+def bracket_indent(depth: int) -> str:
     return TAB_FILL * TAB_SIZE * (depth - 1)
 
 
 # it might be a simple value or nested dict
-def parse_any_value(value, depth):
+def parse_any_value(value: any, depth: int) -> str:
     if isinstance(value, dict):
         return stylish(value, depth)
     else:
         return dumps(value)
 
 
-def make_nested_value(tab, mark, key, value):
+def make_nested_value(tab: str, mark: str, key: any, value: any) -> str:
     return TEMPLATE.format(tab, mark, key, value)
 
 
-def stylish(data, depth=1):
+def stylish(data: dict, depth: int = 1) -> str:
+    '''Takes in diff dict, returns its tree structured view'''
 
     output = []
 

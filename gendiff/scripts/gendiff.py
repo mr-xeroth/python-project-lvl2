@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""To run generate_diff with cli args"""
 
 from gendiff.modules.generate_diff import generate_diff
 from gendiff.modules.parse_args import parse_cli_args

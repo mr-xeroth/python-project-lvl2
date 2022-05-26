@@ -1,9 +1,9 @@
-""" plain JSON diff formatter. """
+"""Plain diff formatter"""
 
 from json import dumps
 
 
-def filter_value(value):
+def filter_value(value: any) -> str:
 
     if isinstance(value, dict):
         return '[complex value]'
@@ -11,12 +11,14 @@ def filter_value(value):
         return dumps(value)
 
 
-def plain(diff, path=''):
+def plain(diff: dict, path: str = '') -> str:
+    '''Takes in diff dict, returns flat changelog'''
+
     output = []
 
     for key, node in diff.items():
 
-        node_name = path + f'.{key}' if path else str(key)
+        node_name = f'{path}.{str(key)}'.lstrip('.')
 
         opening = f"Property '{node_name}' was"
 

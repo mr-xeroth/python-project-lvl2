@@ -1,10 +1,13 @@
+"""To parse cli arguments for diff generation"""
+
 import argparse
 import sys
 
-def parse_cli_args():
-    """
-    returns (file1_name, file2_name, view_format)
-    """
+
+def parse_cli_args() -> tuple:
+    """Returns file1_name, file2_name, view_format strings.
+Prints help and quits if no arguments given"""
+
     parser = argparse.ArgumentParser(description='Compares two configuration \
                                      files and shows a difference.')
     parser.add_argument('first_file', type=argparse.FileType('r'))

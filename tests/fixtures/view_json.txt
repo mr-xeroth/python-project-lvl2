@@ -28,7 +28,10 @@
       "setting5": {
         "type": "added",
         "value": {
-          "key5": "value5"
+          "key5": {
+            "type": "nested",
+            "value": "value5"
+          }
         }
       },
       "setting6": {
@@ -77,7 +80,10 @@
         "value": {
           "new": "str",
           "old": {
-            "key": "value"
+            "key": {
+              "type": "nested",
+              "value": "value"
+            }
           }
         }
       }
@@ -86,9 +92,18 @@
   "group2": {
     "type": "removed",
     "value": {
-      "abc": 12345,
+      "abc": {
+        "type": "nested",
+        "value": 12345
+      },
       "deep": {
-        "id": 45
+        "type": "nested",
+        "value": {
+          "id": {
+            "type": "nested",
+            "value": 45
+          }
+        }
       }
     }
   },
@@ -96,11 +111,23 @@
     "type": "added",
     "value": {
       "deep": {
-        "id": {
-          "number": 45
+        "type": "nested",
+        "value": {
+          "id": {
+            "type": "nested",
+            "value": {
+              "number": {
+                "type": "nested",
+                "value": 45
+              }
+            }
+          }
         }
       },
-      "fee": 100500
+      "fee": {
+        "type": "nested",
+        "value": 100500
+      }
     }
   },
   "group4": {
