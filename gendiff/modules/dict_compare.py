@@ -1,5 +1,20 @@
-#!/usr/bin/env python3
-import sys
+""" genearates raw diff data for formatter's processing """
+
+
+def dict_parse(data):
+    if isinstance(data, dict):
+        output = {}
+        for key in data:
+            output.update(
+                {
+                    key: {
+                        'type': 'nested',
+                        'value': dict_parse(data[key])
+                    }
+                }
+            )
+        return output
+    return data
 
 
 def dict_compare(dict1, dict2):
@@ -10,12 +25,12 @@ def dict_compare(dict1, dict2):
         if key in dict1 and key not in dict2:
             output[key] = {
                 'type': 'removed',
-                'value': dict1[key]
+                'value': dict_parse(dict1[key])
             }
         elif key not in dict1 and key in dict2:
             output[key] = {
                 'type': 'added',
-                'value': dict2[key]
+                'value': dict_parse(dict2[key])
             }
         elif all([isinstance(x, dict) for x in (dict1[key], dict2[key])]):
             output[key] = {
@@ -25,22 +40,14 @@ def dict_compare(dict1, dict2):
         elif dict1[key] == dict2[key]:
             output[key] = {
                 'type': 'untouched',
-                'value': dict1[key]
+                'value': dict_parse(dict1[key])
             }
         else:
             output[key] = {
                 'type': 'updated',
                 'value': {
-                    'old': dict1[key],
-                    'new': dict2[key]
+                    'old': dict_parse(dict1[key]),
+                    'new': dict_parse(dict2[key])
                 }
             }
     return output
-
-
-def main():
-    print(sys.modules[__name__])
-
-
-if __name__ == '__main__':
-    main()

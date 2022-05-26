@@ -1,58 +1,75 @@
-""" runs selected formatter with diff data. """
+""" stylish JSON diff formatter. """
+from json import dumps
 
-from gendiff.formatter.stringify import stringify
+TAB_SIZE = 4
+TAB_FILL = ' '
+
+TEMPLATE = '{}{} {}: {}'
 
 
-def get_diff(diff):
-    mark, values = None, None
-    types = {
-        'nested': ' ',
-        'untouched': ' ',
-        'updated': '*',
-        'removed': '-',
-        'added': '+'
-    }
+def nested_indent(depth):
+    return TAB_FILL * (TAB_SIZE * depth - 2)
 
-    # simple value that isn't of dict type
-    if not isinstance(diff, dict):
-        return '', diff
 
-    # unpack values from "diff" kind of dict
-    if 'type' in diff and 'value' in diff:
-        mark = types[diff['type']]
-        if mark == '*':
-            values = mark, diff['value']['old'], diff['value']['new']
-        else:
-            values = mark, diff['value']
+def bracket_indent(depth):
+    return TAB_FILL * TAB_SIZE * (depth - 1)
+
+
+# it might be a simple value or nested dict
+def parse_any_value(value, depth):
+    if isinstance(value, dict):
+        return stylish(value, depth)
     else:
-        # nondiff dict
-        values = '', diff
-
-    return values
+        return dumps(value)
 
 
-def stylish_format(indent, mark, key_, data):
-    double = ''
-    template = '{}{} {}: {}\n'
-    if not mark:
-        mark = ' '
-    if mark == '*':
-        mark = '-'
-        double = template.format(indent, mark, key_, next(data))
-        mark = '+'
-    return double + template.format(indent, mark, key_, next(data))
+def make_nested_value(tab, mark, key, value):
+    return TEMPLATE.format(tab, mark, key, value)
 
 
-def stylish(data, indent=4):
-    def walk(data, depth):
-        if not isinstance(data, dict):
-            return stringify(data)
-        tab_close = indent * depth * ' '
-        tab_indent = tab_close + (indent - 2) * ' '
-        output = ''
-        for each in data.keys():
-            mark, *values = get_diff(data[each])
-            parsed = map(lambda x: walk(x, depth + 1), values)
-            output += stylish_format(tab_indent, mark, each, parsed)
-        return '{\n' + output + f'{tab_close}}}'
-    return walk(data, 0)
+def stylish(data, depth=1):
+
+    output = []
+
+    output.append('{')
+
+    for key, node in data.items():
+
+        if node['type'] == 'updated':
+            output.append(
+                make_nested_value(
+                    nested_indent(depth),
+                    '-',  # node mark
+                    key,
+                    parse_any_value(node['value']['old'], depth + 1)
+                )
+            )
+
+            output.append(
+                make_nested_value(
+                    nested_indent(depth),
+                    '+',  # node mark
+                    key,
+                    parse_any_value(node['value']['new'], depth + 1)
+                )
+            )
+
+        else:
+            if node['type'] == 'removed':
+                node_mark = '-'
+            elif node['type'] == 'added':
+                node_mark = '+'
+            elif node['type'] == 'untouched' or node['type'] == 'nested':
+                node_mark = TAB_FILL
+
+            output.append(
+                make_nested_value(
+                    nested_indent(depth),
+                    node_mark,
+                    key,
+                    parse_any_value(node['value'], depth + 1)
+                )
+            )
+
+    output.append(f'{bracket_indent(depth)}}}')
+    return '\n'.join(output)

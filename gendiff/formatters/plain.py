@@ -1,56 +1,43 @@
-from gendiff.formatter.stringify import stringify
+""" plain JSON diff formatter. """
+
+from json import dumps
 
 
-def quote_string(func):
-    def wrap(value):
-        result = None
-        if type(value) is str:
-            result = f"'{value}'"
-        else:
-            result = func(value)
-        return result
-    return wrap
-
-
-stringify = quote_string(stringify)
-
-
-# replace dict type for a "here lies dict"
 def filter_value(value):
 
     if isinstance(value, dict):
         return '[complex value]'
     else:
-        return stringify(value)
+        return dumps(value)
 
 
-def plain_report(node, node_name):
-    closing = None
+def plain(diff, path=''):
+    output = []
 
-    if node['type'] == 'updated':
-        values = (filter_value(node['value']['old']),
-                  filter_value(node['value']['new']))
-        closing = f" updated. From {values[0]} to {values[1]}\n"
+    for key, node in diff.items():
 
-    elif node['type'] == 'removed':
-        closing = " removed\n"
+        node_name = path + f'.{key}' if path else str(key)
 
-    elif node['type'] == 'added':
-        closing = f" added with value: {filter_value(node['value'])}\n"
+        opening = f"Property '{node_name}' was"
 
-    if closing:
-        return f"Property '{node_name}' was" + closing
+        closing = None
 
+        if node['type'] == 'updated':
+            val1 = filter_value(node['value']['old'])
+            val2 = filter_value(node['value']['new'])
 
-def plain(diff):
-    def walk(diff, path):
-        output = ''
-        for key, node in diff.items():
-            node_name = path + f'.{key}' if path else str(key)
+            closing = f" updated. From {val1} to {val2}"
+            output.append(opening + closing)
 
-            if node['type'] == 'nested':
-                output += walk(node['value'], node_name)
-            elif report := plain_report(node, node_name):
-                output += report
-        return output
-    return walk(diff, '').rstrip('\n')
+        elif node['type'] == 'removed':
+            closing = " removed"
+            output.append(opening + closing)
+
+        elif node['type'] == 'added':
+            closing = f" added with value: {filter_value(node['value'])}"
+            output.append(opening + closing)
+
+        elif node['type'] == 'nested':
+            output.append(plain(node['value'], node_name))
+
+    return '\n'.join(output)

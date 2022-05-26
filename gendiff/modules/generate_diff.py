@@ -1,7 +1,5 @@
-#!/usr/bin/env python3
 """ parses cli args and prints diff in chosen format. """
 
-import sys
 import json
 import yaml
 
@@ -43,11 +41,3 @@ def generate_diff(file1, file2, view_format="stylish"):
     dict2 = convert_to_dict(data2, type2)
 
     return generate_view(dict_compare(dict1, dict2), view_format)
-
-
-def main():
-    print(sys.modules[__name__])
-
-
-if __name__ == '__main__':
-    main()
