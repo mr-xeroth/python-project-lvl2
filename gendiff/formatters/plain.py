@@ -8,7 +8,7 @@ def filter_value(value: any) -> str:
     if isinstance(value, dict):
         return '[complex value]'
     else:
-        return dumps(value)
+        return dumps(value).replace('"', "'")
 
 
 def plain(diff: dict, path: str = '') -> str:
