@@ -21,6 +21,14 @@ def expected_help():
     return expected
 
 
-@pytest.mark.parametrize('option', ('-h',))
-def test_gendiff_help(option, expected_help):
-    assert main([option]) == expected_help
+@pytest.mark.parametrize('option', ('-h', '--help'))
+def test_gendiff_help(capsys, option, expected_help):
+    # pass on parse_args() exception with pytest
+    try:
+        main([option])
+    except SystemExit:
+        pass
+    
+    captured = capsys.readouterr()
+    
+    assert captured.out == expected_help

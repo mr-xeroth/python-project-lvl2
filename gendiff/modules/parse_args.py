@@ -8,6 +8,8 @@ def parse_cli_args(argv) -> tuple:
     """Returns file1_name, file2_name, view_format strings.
 Prints help and quits if no arguments given"""
 
+    #print('\nCA:', sys.argv)
+    #print('\nMA:', argv)
     parser = argparse.ArgumentParser(description='Compares two configuration \
                                      files and shows a difference.')
     parser.add_argument('first_file', type=argparse.FileType('r'))
