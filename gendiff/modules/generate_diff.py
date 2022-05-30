@@ -3,6 +3,7 @@
 import json
 import yaml
 
+from gendiff.modules.view_formats import VIEW_DEFAULT
 from gendiff.modules.dict_compare import dict_compare
 from gendiff.formatters.generate_view import generate_view
 
@@ -32,7 +33,9 @@ def convert_to_dict(data: str, type_: str) -> dict:
     return result
 
 
-def generate_diff(file1: str, file2: str, view_format: str = "stylish") -> str:
+def generate_diff(
+    file1: str, file2: str,
+        view_format: str = VIEW_DEFAULT) -> str:
     '''Takes in two JSON file names, diff format.
 Returns the diff view of the two'''
 

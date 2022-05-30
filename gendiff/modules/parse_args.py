@@ -1,26 +1,29 @@
 """To parse cli arguments for diff generation"""
 
 import argparse
-import sys
+from gendiff.modules.view_formats import VIEW_FORMATS, VIEW_DEFAULT
 
 
 def parse_cli_args(argv) -> tuple:
-    """Returns file1_name, file2_name, view_format strings.
-Prints help and quits if no arguments given"""
+    """Returns file1_name, file2_name, view_format strings"""
 
-    #print('\nCA:', sys.argv)
-    #print('\nMA:', argv)
-    parser = argparse.ArgumentParser(description='Compares two configuration \
-                                     files and shows a difference.')
+    # print('\nSYS ARGV:', sys.argv)
+    # print('\nINT ARGV:', argv)
+    parser = argparse.ArgumentParser(
+        description='Compares two configuration files and shows a difference.'
+    )
+
     parser.add_argument('first_file', type=argparse.FileType('r'))
-    parser.add_argument('second_file', type=argparse.FileType('r'))
-    parser.add_argument('-f', '--format', type=str, default="stylish",
-                        help='set format of output: "plain", "json", \
-                        default "stylish" ')
 
-    # if len(sys.argv) == 1:
-    #     parser.print_help(sys.stderr)
-    #     sys.exit(0)
+    parser.add_argument('second_file', type=argparse.FileType('r'))
+
+    parser.add_argument(
+        '-f', '--format',
+        type=str,
+        choices=VIEW_FORMATS,
+        default=VIEW_DEFAULT,
+        help='set the format of output'
+    )
 
     args = parser.parse_args(argv)
 
