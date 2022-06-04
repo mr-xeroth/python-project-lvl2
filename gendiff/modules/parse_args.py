@@ -1,7 +1,7 @@
 """To parse cli arguments for diff generation"""
 
 import argparse
-from gendiff.modules.view_formats import VIEW_FORMATS, VIEW_DEFAULT
+from gendiff.formatters.view_formats import VIEW_FORMATS, VIEW_DEFAULT
 
 
 def parse_cli_args(argv) -> tuple:

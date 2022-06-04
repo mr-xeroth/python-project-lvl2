@@ -1,6 +1,6 @@
 """To run selected diff formatter with raw diff"""
 
-from gendiff.modules.view_formats import VIEW_FORMATS
+from gendiff.formatters.view_formats import VIEW_FORMATS
 from gendiff.formatters.stylish import stylish
 from gendiff.formatters.plain import plain
 from gendiff.formatters.json import json

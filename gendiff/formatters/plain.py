@@ -14,6 +14,9 @@ def filter_value(value: any) -> str:
 def plain(diff: dict, path: str = '') -> str:
     '''Takes in diff dict, returns flat changelog'''
 
+    if not type(path) is str:
+        path = ''
+
     output = []
 
     for key, node in diff.items():

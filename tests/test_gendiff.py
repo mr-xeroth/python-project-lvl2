@@ -1,7 +1,7 @@
 import pytest
 import os
 
-from gendiff.modules.view_formats import VIEW_FORMATS, VIEW_DEFAULT
+from gendiff.formatters.view_formats import VIEW_FORMATS, VIEW_DEFAULT
 from gendiff.scripts.gendiff import main
 
 SOURCE_FORMATS = ("json", "yaml")

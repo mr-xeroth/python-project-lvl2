@@ -3,7 +3,7 @@
 import json
 import yaml
 
-from gendiff.modules.view_formats import VIEW_DEFAULT
+from gendiff.formatters.view_formats import VIEW_DEFAULT
 from gendiff.modules.dict_compare import dict_compare
 from gendiff.formatters.generate_view import generate_view
 
