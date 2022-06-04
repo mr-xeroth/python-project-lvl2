@@ -24,10 +24,10 @@ def parse_any_value(value: any, depth: int) -> str:
         return dumps(value).strip('"')
 
 
-def stylish(data: dict, depth: int = 1) -> str:
+def stylish(data: dict, depth: int = 1) -> str:  # noqa: C901
     '''Takes in diff dict, returns its nested tree view'''
 
-    if not type(depth) is int or not depth in range(1, 20):
+    if not type(depth) is int or depth not in range(1, 20):
         depth = 1
 
     output = []
@@ -36,7 +36,7 @@ def stylish(data: dict, depth: int = 1) -> str:
 
     for key, node in data.items():
 
-        if not isinstance(node, dict) or not 'type' in node:
+        if not isinstance(node, dict) or 'type' not in node:
             output.append(
                 TEMPLATE.format(
                     nested_indent(depth),
@@ -66,7 +66,7 @@ def stylish(data: dict, depth: int = 1) -> str:
                 )
             )
             continue
-        
+
         if node['type'] == 'removed':
             node_mark = '-'
         elif node['type'] == 'added':

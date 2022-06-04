@@ -11,7 +11,7 @@ def filter_value(value: any) -> str:
         return dumps(value).replace('"', "'")
 
 
-def plain(diff: dict, path: str = '') -> str:
+def plain(diff: dict, path: str = '') -> str:  # noqa: C901
     '''Takes in diff dict, returns flat changelog'''
 
     if not type(path) is str:
